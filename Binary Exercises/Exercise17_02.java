@@ -39,38 +39,38 @@ public class Exercise17_02 {
         }
 
         // TODO: Write the Date object
+        dataOutputStream.writeLong(currentTime.getTime());
+
         // Hint: Use writeLong() to write currentTime.getTime()
         // TODO: Write the double value
+        dataOutputStream.writeDouble(value);
 
         dataOutputStream.writeLong(currentTime.getTime());
 
 
         // TODO: Close the output stream (or use try-with-resources)
-
         System.out.println("Data written to Exercise17_02.dat");
         dataOutputStream.close();
 
         // PART 2: READ DATA
         // TODO: Create DataInputStream for "Exercise17_02.dat"
-
         DataInputStream dataInputStream = new DataInputStream(new FileInputStream("Exercise17_02.dat"));
 
         // TODO: Read the array of integers
         // Hint: Create a new array and use readInt() five times
-
         int[] readNumbers = new int[5];
         for (int i = 0; i < readNumbers.length; i++) {
             readNumbers[i] = dataInputStream.readInt();
         }
 
         // TODO: Read the Date object
-        // Hint: Use readLong() and create new Date with that value
-        // TODO: Read the double value
-
         Date readDate = new Date(dataInputStream.readLong());
 
-        // TODO: Close the input stream (or use try-with-resources)
+        // Hint: Use readLong() and create new Date with that value
+        // TODO: Read the double value
+        double readValue = dataInputStream.readDouble();
 
+        // TODO: Close the input stream (or use try-with-resources)
         dataInputStream.close();
 
         // TODO: Display all the data you read
@@ -80,5 +80,6 @@ public class Exercise17_02 {
             System.out.println(number);
         }
         System.out.println(readDate);
+        System.out.println(readDouble);
     }
 }
