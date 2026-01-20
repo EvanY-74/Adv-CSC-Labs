@@ -68,7 +68,8 @@ public class Exercise17_02 {
 
         // Hint: Use readLong() and create new Date with that value
         // TODO: Read the double value
-        double readValue = dataInputStream.readDouble();
+        double readDouble = dataInputStream.readDouble();
+
 
         // TODO: Close the input stream (or use try-with-resources)
         dataInputStream.close();
