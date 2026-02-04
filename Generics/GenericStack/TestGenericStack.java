@@ -4,6 +4,11 @@ public class TestGenericStack {
     public static void main(String[] args) {
         // Test with Strings
         GenericStack<String> stringStack = new GenericStack<>();
+        try {
+            String element = stringStack.pop();
+        } catch (Exception e) {
+            System.out.println("Cannot pop element");
+        }
         stringStack.push("The");
         stringStack.push("quick");
         stringStack.push("brown");
@@ -16,6 +21,11 @@ public class TestGenericStack {
         
         // Test with Integers
         GenericStack<Integer> intStack = new GenericStack<>();
+        // try {
+        //     Integer element = stringStack.pop();
+        // } catch (Exception e) {
+        //     System.out.println("Cannot pop element");
+        // }
         intStack.push(10);
         intStack.push(20);
         intStack.push(30);
