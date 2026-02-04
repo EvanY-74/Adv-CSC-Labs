@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import GenericStack;
 
 public class TestGenericStack {
     public static void main(String[] args) {
