@@ -95,6 +95,7 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
 
         if (current == null) return false; // not found
 
+        // Originally mistakenly had current.left/right != null instead of == null which AI caught
         if (current.left == null && current.right == null) { // no children
             // Step 2: determine which case applies and handle it
             // TODO Case 1: current has no children
