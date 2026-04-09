@@ -1,3 +1,8 @@
+/*
+BST tree with search, insert, and delete
+@author Evan Yango
+*/
+
 public class BST<E extends Comparable<E>> implements Tree<E> {
 
     // ── Inner node class ──────────────────────────────────────────────────
@@ -80,34 +85,51 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
         TreeNode<E> parent  = null;
         TreeNode<E> current = root;
 
+        boolean isLeft = false;
         while (current != null) {
-            int cmp = e.compareTo(current);
-            if      (cmp < 0) { parent = current; current = current.left; }
-            else if (cmp > 0) { parent = current; current = current.right; }
+            int cmp = e.compareTo(current.element);
+            if      (cmp < 0) { parent = current; current = current.left; isLeft = true; }
+            else if (cmp > 0) { parent = current; current = current.right; isLeft = false; }
             else break; // found
         }
 
         if (current == null) return false; // not found
 
-        // Step 2: determine which case applies and handle it
-        // TODO Case 1: current has no children
-        //   -- set parent's left or right to null
-        //   -- handle the special case where current is the root
-        if (current.left != null && current.right != null) { // no children
-            if (parent.left == null)
+        // Originally mistakenly had current.left/right != null instead of == null which AI caught
+        if (current.left == null && current.right == null) { // no children
+            // Step 2: determine which case applies and handle it
+            // TODO Case 1: current has no children
+            //   -- set parent's left or right to null
+            //   -- handle the special case where current is the root
+            if (parent == null) this.root = current;
+            else if (isLeft) parent.left = null;
+            else parent.right = null;
+            size--;
+        } else if ((current.left != null) != (current.right != null)) { // 1 child
+            // TODO Case 2: current has one child
+            //   -- set parent's pointer to current's only child
+            //   -- handle the special case where current is the root
+            if (parent == null) this.root = current.left != null ? current.left : current.right;
+            else if (isLeft) parent.left = current.left != null ? current.left : current.right;
+            else parent.right = current.left != null ? current.left : current.right;
+            size--;
+        } else {
+            // TODO Case 3: current has two children
+            //   -- find the in-order successor: go right once, then left as far as possible
+            //   -- copy successor's value into current
+            //   -- delete the successor (it has at most one child, so Case 1 or 2)
+            TreeNode<E> successor = current.right;
+            while (true) {
+                if (successor.left == null) break;
+                successor = successor.left;
+            }
+            E successorElement = successor.element;
+            this.delete(successor.element);
+            current.element = successorElement;
         }
 
-        // TODO Case 2: current has one child
-        //   -- set parent's pointer to current's only child
-        //   -- handle the special case where current is the root
-
-        // TODO Case 3: current has two children
-        //   -- find the in-order successor: go right once, then left as far as possible
-        //   -- copy successor's value into current
-        //   -- delete the successor (it has at most one child, so Case 1 or 2)
-
         // TODO: decrement size and return true
-        size--;
+       
         return true;
     }
 
@@ -118,7 +140,10 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     }
 
     private void inorder(TreeNode<E> node) {
-        return no
+        if (node == null) return;
+        inorder(node.left);
+        System.out.print(node.element + " ");
+        inorder(node.right);    
     }
 
     // ── Preorder traversal ────────────────────────────────────────────────
@@ -128,8 +153,10 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     }
 
     private void preorder(TreeNode<E> node) {
-        // TODO: implement preorder traversal (visit -> left -> right)
-        // Base case: if node is null, return.
+        if (node == null) return;
+        System.out.print(node.element + " ");
+        preorder(node.left);
+        preorder(node.right);   
     }
 
     // ── Postorder traversal ───────────────────────────────────────────────
@@ -139,8 +166,10 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     }
 
     private void postorder(TreeNode<E> node) {
-        // TODO: implement postorder traversal (left -> right -> visit)
-        // Base case: if node is null, return.
+        if (node == null) return;
+        postorder(node.left);
+        postorder(node.right);   
+        System.out.print(node.element + " ");
     }
 
     // ── Size and empty ────────────────────────────────────────────────────
