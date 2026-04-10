@@ -62,6 +62,7 @@ public class MyHashMap<K, V> {
         return Math.abs(key.hashCode()) % table.length;
     }
 
+    // .equals() should be used instead of == because == compares location in memory, while .equals() actually compares the values based on specificied behavior. (Example: String .equals() checks each character in the string)
     /**
      * Puts in a key value pair into the table
      * 
