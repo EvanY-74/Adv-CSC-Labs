@@ -63,6 +63,7 @@ public class MyHashMap<K, V> {
     }
 
     // .equals() should be used instead of == because == compares location in memory, while .equals() actually compares the values based on specificied behavior. (Example: String .equals() checks each character in the string)
+    // You need to use iterator because removing an element normally will through a ConcurrentModificationError so you must step through the LinkedList with an iterator and use the it.remove() method.
     /**
      * Puts in a key value pair into the table
      * 
