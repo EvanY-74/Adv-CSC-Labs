@@ -35,12 +35,15 @@ public class MyHashMap<K, V> {
     }
 
     // ── Fields ────────────────────────────────────────────────────────────
+    /** table where all LinkedLists are stored */
     private LinkedList<Entry<K, V>>[] table;
+    /** total number of entries in table */
     private int size;
+    /** table array length */
     private static final int DEFAULT_CAPACITY = 11;
 
     /**
-     * Constructor
+     * Constructor that defines table and size
      */
     @SuppressWarnings("unchecked")
     public MyHashMap() {
@@ -69,10 +72,8 @@ public class MyHashMap<K, V> {
     public V put(K key, V value) {
         if (key == null) return null;
 
-        // TODO Step 1: compute the index using hash(key)
         int index = this.hash(key);
 
-        // TODO Step 2: if table[index] is null, create a new LinkedList there
         if (table[index] == null) {
             table[index] = new LinkedList<Entry<K, V>>();
             table[index].addFirst(new Entry<K, V>(key, value));
@@ -80,10 +81,7 @@ public class MyHashMap<K, V> {
             return null;
         }
 
-        // TODO Step 3: walk the list at table[index]
-        //   -- compare keys using .equals(), not ==
-        //   -- if an entry with the same key already exists, update its value
-        //      and return the OLD value (do not increment size)
+        // iterate through bucket
         LinkedList<Entry<K, V>> bucket = table[index];
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
@@ -93,8 +91,7 @@ public class MyHashMap<K, V> {
             }
         }
 
-        // TODO Step 4: no existing entry found -- add a new Entry to the
-        //   FRONT of the list (O(1) -- no traversal needed), increment size, return null
+        // fallback case
         bucket.addFirst(new Entry<K, V>(key, value));
         this.size++;
         return null;
@@ -109,22 +106,18 @@ public class MyHashMap<K, V> {
     public V get(K key) {
         if (key == null) return null;
 
-        // TODO Step 1: compute the index using hash(key)
         int index = this.hash(key);
-
-        // TODO Step 2: if table[index] is null, return null (key not present)
         LinkedList<Entry<K, V>> bucket = table[index];
         if (bucket == null) return null;
 
-        // TODO Step 3: walk the list at table[index]
-        //   -- if an entry with a matching key is found, return its value
+        // iterate through bucket
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
                 return entry.value;
             }
         }
 
-        // TODO Step 4: key was not in the list -- return null
+        // fallback case
         return null;
     }
 
@@ -137,22 +130,19 @@ public class MyHashMap<K, V> {
     public boolean containsKey(K key) {
         if (key == null) return false;
 
-        // TODO: return true if the key exists in the map, false otherwise
-        // Hint: get(key) returns null when the key is not present --
-        //   but what if a key IS present and its value is null?
-        //   Walk the list directly to be safe.
-
         int index = this.hash(key);
         LinkedList<Entry<K, V>> bucket = table[index];
 
         if (bucket == null) return false;
 
+        // iterate through bucket
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
                 return true;
             }
         }
 
+        // fallback case
         return false;
     }
 
@@ -165,20 +155,12 @@ public class MyHashMap<K, V> {
     public V remove(K key) {
         if (key == null) return null;
 
-        // TODO Step 1: compute the index using hash(key)
         int index = this.hash(key);
 
-        // TODO Step 2: if table[index] is null, return null (nothing to remove)
         LinkedList<Entry<K, V>> bucket = table[index];
         if (bucket == null) return null;
 
-        // TODO Step 3: walk the list at table[index]
-        //   -- compare keys using .equals(), not ==
-        //   -- if an entry with a matching key is found:
-        //      remove it from the list, decrement size, return its value
-        //   -- You cannot remove from a list inside a for-each loop.
-        //      Use an iterator: Iterator<Entry<K,V>> it = table[index].iterator()
-        //      then it.remove() when you find the match.
+        // iterate through bucket with iterator
         Iterator<Entry<K, V>> it = bucket.iterator();
         while (it.hasNext()) {
             Entry<K, V> entry = it.next();
@@ -190,8 +172,7 @@ public class MyHashMap<K, V> {
             }
         }
 
-        // TODO Step 4: key was not found -- return null
-
+        // fallback case
         return null;
     }
 
